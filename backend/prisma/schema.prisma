@@ -1,0 +1,41 @@
+// Prisma schema for Mentorship Matching Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  profile      Profile?
+  sentRequests     MentorshipRequest[] @relation("SentRequests")
+  receivedRequests MentorshipRequest[] @relation("ReceivedRequests")
+}
+
+model Profile {
+  id        Int    @id @default(autoincrement())
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int    @unique
+  role      String
+  skills    String?
+  interests String?
+  bio       String?
+  updatedAt DateTime @updatedAt
+}
+
+model MentorshipRequest {
+  id          Int      @id @default(autoincrement())
+  fromUser    User     @relation("SentRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
+  fromUserId  Int
+  toUser      User     @relation("ReceivedRequests", fields: [toUserId], references: [id], onDelete: Cascade)
+  toUserId    Int
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+}
