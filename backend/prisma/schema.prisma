@@ -10,8 +10,8 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
+  id           String   @id @default(cuid())
+  email        String   @unique
   passwordHash String
   createdAt    DateTime  @default(now())
   profile      Profile?
@@ -20,9 +20,9 @@ model User {
 }
 
 model Profile {
-  id        Int    @id @default(autoincrement())
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int    @unique
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String  @unique
   role      String
   skills    String?
   interests String?
@@ -31,11 +31,11 @@ model Profile {
 }
 
 model MentorshipRequest {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(cuid())
   fromUser    User     @relation("SentRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
-  fromUserId  Int
+  fromUserId  String
   toUser      User     @relation("ReceivedRequests", fields: [toUserId], references: [id], onDelete: Cascade)
-  toUserId    Int
+  toUserId    String
   status      String   @default("pending")
   createdAt   DateTime @default(now())
 }
