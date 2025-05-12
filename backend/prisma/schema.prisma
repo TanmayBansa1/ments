@@ -24,8 +24,8 @@ model Profile {
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String  @unique
   role      String
-  skills    String?
-  interests String?
+  skills    String[]
+  interests String[]
   bio       String?
   updatedAt DateTime @updatedAt
 }

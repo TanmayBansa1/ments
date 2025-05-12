@@ -8,6 +8,7 @@ const router = express.Router();
 // Get current user's profile
 router.get('/getUser', authenticateToken, async (req, res) => {
   try {
+    console.log(req.user.userId);
     const profile = await prisma.profile.findUnique({
       where: { userId: req.user.userId },
     });
